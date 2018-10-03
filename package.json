@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/kmulligan01/liri-node-app#readme",
   "dependencies": {
+    "bandsintown": "^1.0.1",
     "dotenv": "^6.0.0",
+    "moment": "^2.22.2",
     "node-spotify-api": "^1.0.7"
   }
 }

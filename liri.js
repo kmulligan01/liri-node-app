@@ -1,7 +1,9 @@
 var Spotify = require('node-spotify-api');
+var bandsintown = require('bandsintown');
 require("dotenv").config();
 var keys = require("./keys.js");
 var fs = require('fs');
+var moment = require('moment');
 var userSearch = process.argv[2];
 var songName = process.argv.slice(3).join(" ");
 var artist = process.argv.slice(3).join(" ");
@@ -56,19 +58,21 @@ function getSongInfo(songName) {
 }
 
 function concertThis() {
-    var URL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    var URL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=381ef5eda54a972684bbe0b465ad6191";
 
-    request(URL, function (err, response, EventData) {
+    request(URL, function (err, response, data) {
         if (!err && response.statusCode === 200) {
 
+            var jsonData = JSON.parse(data);
+        
             var venueData = [
-                "Name of Venue: " + EventData.venue.name,
-                "Location: " + venueInfo.city,
-                "Date of the event: " + venueInfo.datetime
+                "Name of Venue: " + jsonData[0].venue.name,
+                "Venue Location: " + jsonData[0].venue.city,
+                "Date of Event: " + moment(jsonData[0].datetime).format("MMM Do YY") 
             ].join("\n\n");
 
             console.log(venueData);
-        };
+        }
     });
 }
 
@@ -108,13 +112,7 @@ function doThis() {
             return console.log(error);
         }
         else {
-            console.log(data);
-            var dataArray = data.split(",");
-            var command = dataArray[0].trim();
-			var param = dataArray[1].trim();
-
-            caseCommands(command, param);
+            
         }
-    
     });
 }
